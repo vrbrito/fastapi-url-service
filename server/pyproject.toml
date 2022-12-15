@@ -16,6 +16,7 @@ authors = [
 ]
 dependencies = [
     "fastapi>=0.88.0",
+    "uvicorn>=0.20.0",
 ]
 requires-python = ">=3.11"
 license = {text = "MIT"}

@@ -6,13 +6,13 @@ Create a service deployed on AWS Lambda that provides access to private S3 bucke
 
 ### Core
 
-- [X] Setup package manager
-- [X] Install FastAPI
-- [ ] Create dummy endpoint
+- [x] Setup package manager
+- [x] Install FastAPI
+- [x] Create dummy endpoint
 - [ ] Setup S3 integration
 - [ ] Create endpoint to list files
 - [ ] Create endpoint to retrieve pre-signed url for a specific file
-- [X] Setup linting
+- [x] Setup linting
 - [ ] Setup testing
 - [ ] Setup persistence layer (DynamoDB?)
 - [ ] Setup token auth to API
