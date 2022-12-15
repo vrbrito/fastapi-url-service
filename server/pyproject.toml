@@ -1,0 +1,14 @@
+[tool.pdm]
+
+[project]
+name = "url-service"
+version = "0.1"
+description = ""
+authors = [
+    {name = "Vitor Ramalho", email = "ramalhodevitor@gmail.com"},
+]
+dependencies = [
+    "fastapi>=0.88.0",
+]
+requires-python = ">=3.11"
+license = {text = "MIT"}
