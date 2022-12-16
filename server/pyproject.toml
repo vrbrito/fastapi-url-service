@@ -5,6 +5,7 @@ dev = [
     "isort>=5.11.2",
     "flake8>=6.0.0",
     "mypy>=0.991",
+    "pytest>=7.2.0",
 ]
 
 [project]
@@ -33,21 +34,21 @@ include = '.pyi?$'
 exclude = '''
 /(
     \.eggs
-  | \.git
-  | \.hg
-  | \.mypy_cache
-  | \.nox
-  | \.tox
-  | \.venv
-  | \.direnv
-  | \.svn
-  | _build
-  | buck-out
-  | build
-  | dist
-  | migrations
-  | manage.py
-  | snapshots
+    | \.git
+    | \.hg
+    | \.mypy_cache
+    | \.nox
+    | \.tox
+    | \.venv
+    | \.direnv
+    | \.svn
+    | _build
+    | buck-out
+    | build
+    | dist
+    | migrations
+    | manage.py
+    | snapshots
 )/
 '''
 
