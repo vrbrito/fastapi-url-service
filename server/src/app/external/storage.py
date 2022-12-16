@@ -4,8 +4,22 @@ import boto3
 import botocore
 
 
+def get_s3_client():
+    return boto3.client("s3")
+
+
+def list_files(bucket_name: str) -> list[str]:
+    s3 = get_s3_client()
+    response = s3.list_objects(Bucket=bucket_name)
+
+    if "Contents" not in response:
+        return []
+
+    return [file["Key"] for file in response["Contents"] if "Key" in file]
+
+
 def check_if_file_exists(bucket_name: str, object_name: str) -> bool:
-    s3 = boto3.client("s3")
+    s3 = get_s3_client()
 
     try:
         s3.head_object(Bucket=bucket_name, Key=object_name)
@@ -19,7 +33,7 @@ def check_if_file_exists(bucket_name: str, object_name: str) -> bool:
 
 
 def get_pre_signed_url(bucket_name: str, object_name: str, expiration=3600) -> Optional[str]:
-    s3 = boto3.client("s3")
+    s3 = get_s3_client()
 
     if not check_if_file_exists(bucket_name, object_name):
         return None
