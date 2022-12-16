@@ -1,22 +1,43 @@
-from fastapi import APIRouter
+import os
+
+from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
+
+from app.external import storage
+
+AWS_BUCKET_NAME = os.getenv("AWS_BUCKET_NAME", "url-service-dev-files")
+
 
 router = APIRouter(
     prefix="/files",
     tags=["files"],
-    responses={404: {"description": "Not found"}},
 )
 
 
-class Payload(BaseModel):
+class FileList(BaseModel):
+    files: list[str]
+
+
+class SignedURLPayload(BaseModel):
     path: str
 
 
-@router.get("/")
-def list_files() -> dict:
-    return {}
+class SignedURL(BaseModel):
+    signed_url: str
 
 
-@router.post("/")
-def obtain_pre_signed_url(payload: Payload) -> dict:
-    return {}
+@router.get("/", response_model=FileList)
+def list_files():
+    files = storage.list_files(bucket_name=AWS_BUCKET_NAME)
+
+    return {"files": files}
+
+
+@router.post("/", response_model=SignedURL, responses={404: {"description": "File not found"}})
+def obtain_pre_signed_url(payload: SignedURLPayload):
+    pre_signed_url = storage.get_pre_signed_url(bucket_name=AWS_BUCKET_NAME, object_name=payload.path)
+
+    if not pre_signed_url:
+        raise HTTPException(status_code=404, detail="File not found")
+
+    return {"signed_url": pre_signed_url}

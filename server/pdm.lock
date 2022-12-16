@@ -157,6 +157,30 @@ requires_python = ">=3.7"
 summary = "A pure-Python, bring-your-own-I/O implementation of HTTP/1.1"
 
 [[package]]
+name = "httpcore"
+version = "0.16.2"
+requires_python = ">=3.7"
+summary = "A minimal low-level HTTP client."
+dependencies = [
+    "anyio<5.0,>=3.0",
+    "certifi",
+    "h11<0.15,>=0.13",
+    "sniffio==1.*",
+]
+
+[[package]]
+name = "httpx"
+version = "0.23.1"
+requires_python = ">=3.7"
+summary = "The next generation HTTP client."
+dependencies = [
+    "certifi",
+    "httpcore<0.17.0,>=0.15.0",
+    "rfc3986[idna2008]<2,>=1.3",
+    "sniffio",
+]
+
+[[package]]
 name = "idna"
 version = "3.4"
 requires_python = ">=3.5"
@@ -400,6 +424,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "rfc3986"
+version = "1.5.0"
+summary = "Validating URI References per RFC 3986"
+
+[[package]]
+name = "rfc3986"
+version = "1.5.0"
+extras = ["idna2008"]
+summary = "Validating URI References per RFC 3986"
+dependencies = [
+    "idna",
+    "rfc3986==1.5.0",
+]
+
+[[package]]
 name = "s3transfer"
 version = "0.6.0"
 requires_python = ">= 3.7"
@@ -494,7 +533,7 @@ summary = "Makes working with XML feel like you are working with JSON"
 
 [metadata]
 lock_version = "4.1"
-content_hash = "sha256:a28dc44c6039fd263ca14c51e27e1d8890ce1ccc86f9511414912af09dd666c7"
+content_hash = "sha256:1c0615685e34eee2aeeebbdfbca309e3a97b33d5060fdf8bf1677a785c4d217d"
 
 [metadata.files]
 "anyio 3.6.2" = [
@@ -656,6 +695,14 @@ content_hash = "sha256:a28dc44c6039fd263ca14c51e27e1d8890ce1ccc86f9511414912af09
 "h11 0.14.0" = [
     {url = "https://files.pythonhosted.org/packages/95/04/ff642e65ad6b90db43e668d70ffb6736436c7ce41fcc549f4e9472234127/h11-0.14.0-py3-none-any.whl", hash = "sha256:e3fe4ac4b851c468cc8363d500db52c2ead036020723024a109d37346efaa761"},
     {url = "https://files.pythonhosted.org/packages/f5/38/3af3d3633a34a3316095b39c8e8fb4853a28a536e55d347bd8d8e9a14b03/h11-0.14.0.tar.gz", hash = "sha256:8f19fbbe99e72420ff35c00b27a34cb9937e902a8b810e2c88300c6f0a3b699d"},
+]
+"httpcore 0.16.2" = [
+    {url = "https://files.pythonhosted.org/packages/91/52/93f22e5441539256c0d113faf17e45284aee16eebdd95089e3ca6f480b18/httpcore-0.16.2-py3-none-any.whl", hash = "sha256:52c79095197178856724541e845f2db86d5f1527640d9254b5b8f6f6cebfdee6"},
+    {url = "https://files.pythonhosted.org/packages/9b/20/26f6cc4fd00391f8f1c57b0020f5c6eec23904723db04b6f7608e222d815/httpcore-0.16.2.tar.gz", hash = "sha256:c35c5176dc82db732acfd90b581a3062c999a72305df30c0fc8fafd8e4aca068"},
+]
+"httpx 0.23.1" = [
+    {url = "https://files.pythonhosted.org/packages/8a/df/a3e8b91dfb452e645ef110985a30f0915276a1a2144004c7671c07bb203c/httpx-0.23.1.tar.gz", hash = "sha256:202ae15319be24efe9a8bd4ed4360e68fde7b38bcc2ce87088d416f026667d19"},
+    {url = "https://files.pythonhosted.org/packages/e1/74/cdce73069e021ad5913451b86c2707b027975cf302016ca557686d87eb41/httpx-0.23.1-py3-none-any.whl", hash = "sha256:0b9b1f0ee18b9978d637b0776bfd7f54e2ca278e063e3586d8f01cda89e042a8"},
 ]
 "idna 3.4" = [
     {url = "https://files.pythonhosted.org/packages/8b/e1/43beb3d38dba6cb420cefa297822eac205a277ab43e5ba5d5c46faf96438/idna-3.4.tar.gz", hash = "sha256:814f528e8dead7d329833b91c5faa87d60bf71824cd12a7530b5526063d02cb4"},
@@ -876,6 +923,10 @@ content_hash = "sha256:a28dc44c6039fd263ca14c51e27e1d8890ce1ccc86f9511414912af09
 "responses 0.22.0" = [
     {url = "https://files.pythonhosted.org/packages/03/cc/c15e28fdbc81909ac18a4c22bebe8517bbafef43947a072da6f042fbd4d5/responses-0.22.0.tar.gz", hash = "sha256:396acb2a13d25297789a5866b4881cf4e46ffd49cc26c43ab1117f40b973102e"},
     {url = "https://files.pythonhosted.org/packages/a4/d0/2b9030eedf7061ac60828fcd92a4b04dc9a7dd07f316300f2841c41421a0/responses-0.22.0-py3-none-any.whl", hash = "sha256:dcf294d204d14c436fddcc74caefdbc5764795a40ff4e6a7740ed8ddbf3294be"},
+]
+"rfc3986 1.5.0" = [
+    {url = "https://files.pythonhosted.org/packages/79/30/5b1b6c28c105629cc12b33bdcbb0b11b5bb1880c6cfbd955f9e792921aa8/rfc3986-1.5.0.tar.gz", hash = "sha256:270aaf10d87d0d4e095063c65bf3ddbc6ee3d0b226328ce21e036f946e421835"},
+    {url = "https://files.pythonhosted.org/packages/c4/e5/63ca2c4edf4e00657584608bee1001302bbf8c5f569340b78304f2f446cb/rfc3986-1.5.0-py2.py3-none-any.whl", hash = "sha256:a86d6e1f5b1dc238b218b012df0aa79409667bb209e58da56d0b94704e712a97"},
 ]
 "s3transfer 0.6.0" = [
     {url = "https://files.pythonhosted.org/packages/5e/c6/af903b5fab3f9b5b1e883f49a770066314c6dcceb589cf938d48c89556c1/s3transfer-0.6.0-py3-none-any.whl", hash = "sha256:06176b74f3a15f61f1b4f25a1fc29a4429040b7647133a463da8fa5bd28d5ecd"},

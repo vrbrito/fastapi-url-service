@@ -1,22 +1,7 @@
-import boto3
 from moto import mock_s3
 
 from app.external.storage import check_if_file_exists, get_pre_signed_url, list_files
-
-
-def setup_bucket(bucket_name: str) -> None:
-    conn = boto3.resource("s3", region_name="us-east-1")
-    conn.create_bucket(Bucket=bucket_name)
-
-
-def create_file(bucket_name: str, object_name: str) -> None:
-    s3 = boto3.client("s3", region_name="us-east-1")
-    s3.put_object(Bucket=bucket_name, Key=object_name, Body="test123")
-
-
-def create_files(bucket_name: str, object_names: list[str]) -> None:
-    for object_name in object_names:
-        create_file(bucket_name, object_name)
+from tests.conftest import create_file, create_files, setup_bucket
 
 
 @mock_s3
