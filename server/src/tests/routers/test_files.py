@@ -1,8 +1,8 @@
 from fastapi.testclient import TestClient
 from moto import mock_s3
 
+from app import settings
 from app.main import app
-from app.routers.files import AWS_BUCKET_NAME
 from tests.conftest import create_file, create_files, setup_bucket
 
 client = TestClient(app)
@@ -10,7 +10,7 @@ client = TestClient(app)
 
 @mock_s3
 def test_list_files_endpoint():
-    bucket_name = AWS_BUCKET_NAME
+    bucket_name = settings.AWS_BUCKET_NAME
     object_names = [
         "test.txt",
         "a/test.txt",
@@ -29,7 +29,7 @@ def test_list_files_endpoint():
 
 @mock_s3
 def test_list_files_endpoint_empty_bucket():
-    bucket_name = AWS_BUCKET_NAME
+    bucket_name = settings.AWS_BUCKET_NAME
 
     setup_bucket(bucket_name)
 
@@ -41,7 +41,7 @@ def test_list_files_endpoint_empty_bucket():
 
 @mock_s3
 def test_obtain_pre_signed_url():
-    bucket_name = AWS_BUCKET_NAME
+    bucket_name = settings.AWS_BUCKET_NAME
     object_name = "b/c/test.txt"
 
     setup_bucket(bucket_name)
@@ -65,7 +65,7 @@ def test_obtain_pre_signed_url():
 
 @mock_s3
 def test_obtain_pre_signed_url_file_does_not_exist():
-    bucket_name = AWS_BUCKET_NAME
+    bucket_name = settings.AWS_BUCKET_NAME
 
     setup_bucket(bucket_name)
 
