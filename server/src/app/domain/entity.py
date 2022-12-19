@@ -1,22 +1,29 @@
-import uuid
-from dataclasses import dataclass, field
 from datetime import datetime
 from uuid import UUID, uuid4
 
+from pydantic import BaseModel, Field
 
-@dataclass
-class User:
+
+def current_time():
+    return datetime.now()
+
+
+class User(BaseModel):
     firstName: str
     lastName: str
     email: str
     isActive: bool = True
     isAdmin: bool = False
-    token: UUID = field(default_factory=uuid4)
-    createdOn: datetime = field(default_factory=datetime.now)
+    token: UUID = Field(default_factory=uuid4)
+    createdOn: datetime = Field(default_factory=current_time)
 
     @property
     def entity_identifier(self):
-        return f"USER#{self.token}"
+        return self.from_token_to_identifier(self.token)
+
+    @classmethod
+    def from_token_to_identifier(cls, token: UUID):
+        return f"USER#{token}"
 
     @classmethod
     def from_db(cls, user_dict: dict) -> "User":
@@ -27,7 +34,7 @@ class User:
         entity_identifier = user_dict.pop("entityIdentifier")
         creation = user_dict.pop("createdOn")
 
-        token = uuid.UUID(entity_identifier.strip("USER#"))
+        token = UUID(entity_identifier.strip("USER#"))
         created_on = datetime.fromisoformat(creation)
 
         return cls(

@@ -1,82 +1,65 @@
-from dataclasses import dataclass
-from typing import Sequence
+import uuid
 
-import boto3
+import pytest
 from moto import mock_dynamodb
-from mypy_boto3_dynamodb.type_defs import (
-    AttributeDefinitionTypeDef,
-    GlobalSecondaryIndexTypeDef,
-    KeySchemaElementTypeDef,
-)
 
 from app.domain.entity import User
-from app.external.db import check_if_user_token_is_valid, get_user
+from app.domain.exceptions import UserAlreadyExistsError
+from app.external.db import check_if_user_token_is_valid, create_user, get_user_by_email, get_user_by_identifier
+from tests.conftest import add_item, get_item, setup_db, table_schema
 from tests.domain.factories import UserFactory
 
 
-@dataclass
-class TableSchema:
-    key_schema: Sequence[KeySchemaElementTypeDef]
-    attribute_definitions: Sequence[AttributeDefinitionTypeDef]
-    global_secondary_indexes: Sequence[GlobalSecondaryIndexTypeDef]
-
-
-table_schema = TableSchema(
-    key_schema=[
-        {"AttributeName": "entityIdentifier", "KeyType": "HASH"},
-        {"AttributeName": "dataType", "KeyType": "RANGE"},
-    ],
-    attribute_definitions=[
-        {"AttributeName": "entityIdentifier", "AttributeType": "S"},
-        {"AttributeName": "dataType", "AttributeType": "S"},
-        {"AttributeName": "email", "AttributeType": "S"},
-        {"AttributeName": "createdOn", "AttributeType": "S"},
-    ],
-    global_secondary_indexes=[
-        {
-            "IndexName": "emailIndex",
-            "KeySchema": [
-                {"AttributeName": "email", "KeyType": "HASH"},
-                {"AttributeName": "createdOn", "KeyType": "RANGE"},
-            ],
-            "Projection": {
-                "ProjectionType": "ALL",
-            },
-        },
-    ],
-)
-
-
-def setup_db(table_name: str, table_schema: TableSchema) -> None:
-    dynamodb = boto3.client("dynamodb")
-    dynamodb.create_table(
-        TableName=table_name,
-        KeySchema=table_schema.key_schema,
-        AttributeDefinitions=table_schema.attribute_definitions,
-        GlobalSecondaryIndexes=table_schema.global_secondary_indexes,
-        BillingMode="PAY_PER_REQUEST",
-    )
-
-
-def add_entry(table_name: str, user: User) -> None:
-    dynamodb = boto3.resource("dynamodb")
-    table = dynamodb.Table(table_name)
-
-    item = user.to_db()
-
-    table.put_item(Item=item)
-
-
 @mock_dynamodb
-def test_get_user():
+def test_create_user():
     table_name = "url-service-dev"
     user = UserFactory.create()
 
     setup_db(table_name, table_schema)
-    add_entry(table_name, user)
 
-    assert get_user(table_name, user.entity_identifier) == user
-    assert get_user(table_name, "non-existent") is None
+    create_user(table_name, user)
+
+    response = get_item(
+        table_name,
+        {"entityIdentifier": user.entity_identifier, "dataType": "METADATA"},
+    )
+    assert User.from_db(response) == user  # type: ignore
+
+
+@mock_dynamodb
+def test_create_user_user_already_exists():
+    table_name = "url-service-dev"
+    user = UserFactory.create()
+
+    setup_db(table_name, table_schema)
+    add_item(table_name, user.to_db())
+
+    with pytest.raises(UserAlreadyExistsError):
+        create_user(table_name, user)
+
+
+@mock_dynamodb
+def test_get_user_by_identifier():
+    table_name = "url-service-dev"
+    user = UserFactory.create()
+
+    setup_db(table_name, table_schema)
+    add_item(table_name, user.to_db())
+
+    assert get_user_by_identifier(table_name, user.entity_identifier) == user
+    assert get_user_by_identifier(table_name, "non-existent") is None
+
+
+@mock_dynamodb
+def test_get_user_by_email():
+    table_name = "url-service-dev"
+    user = UserFactory.create()
+
+    setup_db(table_name, table_schema)
+    add_item(table_name, user.to_db())
+
+    assert get_user_by_email(table_name, user.email) == user
+    assert get_user_by_email(table_name, "non-existent") is None
 
 
 @mock_dynamodb
@@ -87,9 +70,9 @@ def test_check_if_user_token_is_valid():
     inactive_user = UserFactory.create(isActive=False)
 
     setup_db(table_name, table_schema)
-    add_entry(table_name, active_user)
-    add_entry(table_name, inactive_user)
+    add_item(table_name, active_user.to_db())
+    add_item(table_name, inactive_user.to_db())
 
-    assert check_if_user_token_is_valid(table_name, active_user.entity_identifier) is True
-    assert check_if_user_token_is_valid(table_name, inactive_user.entity_identifier) is False
-    assert check_if_user_token_is_valid(table_name, "non-existent") is False
+    assert check_if_user_token_is_valid(table_name, active_user.token) is True
+    assert check_if_user_token_is_valid(table_name, inactive_user.token) is False
+    assert check_if_user_token_is_valid(table_name, uuid.uuid4()) is False

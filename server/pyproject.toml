@@ -10,6 +10,7 @@ dev = [
     "boto3-stubs[essential]>=1.26.31",
     "botocore-stubs>=1.29.31",
     "factory-boy>=3.2.1",
+    "pytest-freezegun>=0.4.2",
 ]
 
 [project]

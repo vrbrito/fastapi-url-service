@@ -16,7 +16,7 @@ Create a service deployed on AWS Lambda that provides access to private S3 bucke
 - [x] Setup testing
 - [x] Improve testing to use factory boy
 - [x] Setup persistence layer (DynamoDB?)
-- [ ] Create endpoint to add new user
+- [x] Create endpoint to add new user
 - [ ] Setup token auth to API
 - [ ] Create usage measurements based on token auth
 
