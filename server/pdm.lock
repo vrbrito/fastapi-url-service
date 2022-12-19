@@ -130,6 +130,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "factory-boy"
+version = "3.2.1"
+requires_python = ">=3.6"
+summary = "A versatile test fixtures replacement based on thoughtbot's factory_bot for Ruby."
+dependencies = [
+    "Faker>=0.7.0",
+]
+
+[[package]]
+name = "faker"
+version = "15.3.4"
+requires_python = ">=3.7"
+summary = "Faker is a Python package that generates fake data for you."
+dependencies = [
+    "python-dateutil>=2.4",
+]
+
+[[package]]
 name = "fastapi"
 version = "0.88.0"
 requires_python = ">=3.7"
@@ -533,7 +551,7 @@ summary = "Makes working with XML feel like you are working with JSON"
 
 [metadata]
 lock_version = "4.1"
-content_hash = "sha256:1c0615685e34eee2aeeebbdfbca309e3a97b33d5060fdf8bf1677a785c4d217d"
+content_hash = "sha256:ec7b03411635e4387ad6f3b062e0f38e1507a8a91d57493469f8ea52741e2b97"
 
 [metadata.files]
 "anyio 3.6.2" = [
@@ -683,6 +701,14 @@ content_hash = "sha256:1c0615685e34eee2aeeebbdfbca309e3a97b33d5060fdf8bf1677a785
     {url = "https://files.pythonhosted.org/packages/d9/55/aedec39dd8884d539941faa57c74952b9dccf76d2c9d48a65acc24877434/cryptography-38.0.4-pp37-pypy37_pp73-manylinux_2_28_x86_64.whl", hash = "sha256:0e70da4bdff7601b0ef48e6348339e490ebfb0cbe638e083c9c41fb49f00c8bd"},
     {url = "https://files.pythonhosted.org/packages/e3/3f/41186b1f2fd86a542d399175f6b8e43f82cd4dfa51235a0b030a042b811a/cryptography-38.0.4.tar.gz", hash = "sha256:175c1a818b87c9ac80bb7377f5520b7f31b3ef2a0004e2420319beadedb67290"},
     {url = "https://files.pythonhosted.org/packages/fb/28/0544f67e2ffdc15874d7a650a867c78a7dba245afe3392f51cfae363545c/cryptography-38.0.4-pp39-pypy39_pp73-win_amd64.whl", hash = "sha256:80ca53981ceeb3241998443c4964a387771588c4e4a5d92735a493af868294f9"},
+]
+"factory-boy 3.2.1" = [
+    {url = "https://files.pythonhosted.org/packages/50/20/18b99c494ba37054bee29a72c4cfc7aa938ed465411f0d66a4ddfb09f7fc/factory_boy-3.2.1.tar.gz", hash = "sha256:a98d277b0c047c75eb6e4ab8508a7f81fb03d2cb21986f627913546ef7a2a55e"},
+    {url = "https://files.pythonhosted.org/packages/8a/31/df38bc685d1c06501afd7ca97fac2ab13af6bae6871519682a04a2e14044/factory_boy-3.2.1-py2.py3-none-any.whl", hash = "sha256:eb02a7dd1b577ef606b75a253b9818e6f9eaf996d94449c9d5ebb124f90dc795"},
+]
+"faker 15.3.4" = [
+    {url = "https://files.pythonhosted.org/packages/1f/eb/f9de0a26e4494f51bc7bc7e1b2879ba9d7a803d9546c28312e628aa3d3f8/Faker-15.3.4-py3-none-any.whl", hash = "sha256:c2a2ff9dd8dfd991109b517ab98d5cb465e857acb45f6b643a0e284a9eb2cc76"},
+    {url = "https://files.pythonhosted.org/packages/f7/4c/fa7aa83aa53c641798a338ceaee200a22a988b367323b118c962855be580/Faker-15.3.4.tar.gz", hash = "sha256:2d5443724f640ce07658ca8ca8bbd40d26b58914e63eec6549727869aa67e2cc"},
 ]
 "fastapi 0.88.0" = [
     {url = "https://files.pythonhosted.org/packages/d8/09/ce090f6d53ce8b6335954488087210fa1e054c4a65f74d5f76aed254c159/fastapi-0.88.0-py3-none-any.whl", hash = "sha256:263b718bb384422fe3d042ffc9a0c8dece5e034ab6586ff034f6b4b1667c3eee"},

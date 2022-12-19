@@ -2,9 +2,7 @@ from typing import Optional
 
 import boto3
 
-
-class UserAlreadyExists(Exception):
-    pass
+from app.domain.entity import User
 
 
 def get_dynamodb_table(table_name: str):
@@ -12,22 +10,22 @@ def get_dynamodb_table(table_name: str):
     return dynamodb.Table(table_name)
 
 
-def get_user(table_name: str, token: str) -> Optional[dict]:
+def get_user(table_name: str, token: str) -> Optional[User]:
     table = get_dynamodb_table(table_name)
     response = table.get_item(
         Key={
-            "pk": token,
-            "sk": "METADATA",
+            "entityIdentifier": token,
+            "dataType": "METADATA",
         }
     )
 
     if "Item" not in response:
         return None
 
-    return response["Item"]
+    return User.from_db(response["Item"])
 
 
 def check_if_user_token_is_valid(table_name: str, token: str) -> bool:
     user = get_user(table_name, token)
 
-    return bool(user) and user["isActive"]
+    return user is not None and user.isActive
