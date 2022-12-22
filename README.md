@@ -2,6 +2,18 @@
 
 Create a service deployed on AWS Lambda that provides access to private S3 bucket files through pre-signed urls tracking usage based on token authentication.
 
+## Stack
+
+- Python
+- FastAPI
+- Poetry
+- Pytest
+- Moto
+- Terraform
+- AWS Lambda
+- DynamoDB
+- S3
+
 ## Requirements
 
 ### Core
@@ -25,8 +37,12 @@ Create a service deployed on AWS Lambda that provides access to private S3 bucke
 - [x] Setup base terraform for managing resources
 - [x] Setup S3 resource (make it fully private to avoid public access)
 - [x] Setup DynamoDB resource
-- [ ] Setup FastAPI deploy to AWS Lambda
+- [x] Setup FastAPI deploy to AWS Lambda
 - [ ] Setup CI/CD pipeline
+
+### Bugs
+
+- [] Redirect loop happening on the deployed version of the app
 
 ## Database
 

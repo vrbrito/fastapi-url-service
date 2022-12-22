@@ -1,33 +1,33 @@
-[tool.pdm]
-[tool.pdm.dev-dependencies]
-dev = [
-    "black>=22.12.0",
-    "isort>=5.11.2",
-    "flake8>=6.0.0",
-    "mypy>=0.991",
-    "pytest>=7.2.0",
-    "moto>=4.0.11",
-    "boto3-stubs[essential]>=1.26.31",
-    "botocore-stubs>=1.29.31",
-    "factory-boy>=3.2.1",
-    "pytest-freezegun>=0.4.2",
-]
-
-[project]
+[tool.poetry]
 name = "url-service"
-version = "0.1"
-description = ""
-authors = [
-    {name = "Vitor Ramalho", email = "ramalhodevitor@gmail.com"},
-]
-dependencies = [
-    "fastapi>=0.88.0",
-    "uvicorn>=0.20.0",
-    "boto3>=1.26.31",
-    "httpx>=0.23.1",
-]
-requires-python = ">=3.11"
-license = {text = "MIT"}
+version = "0.1.0"
+description = "URL Service"
+authors = ["Vitor Ramalho <ramalhodevitor@gmail.com>"]
+packages = []
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fastapi = "^0.88.0"
+mangum = "^0.17.0"
+uvicorn = "^0.20.0"
+httpx = "^0.23.1"
+boto3 = "^1.26.35"
+
+[tool.poetry.group.dev.dependencies]
+black = "^22.12.0"
+isort = "^5.11.4"
+flake8 = "^6.0.0"
+mypy = "^0.991"
+pytest = "^7.2.0"
+moto = "^4.0.12"
+factory-boy = "^3.2.1"
+pytest-freezegun = "^0.4.2"
+botocore-stubs = "^1.29.35"
+boto3-stubs = {extras = ["essential"], version = "^1.26.35"}
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
 
 [tool.isort]
 profile = "black"
