@@ -4,15 +4,11 @@ Create a service deployed on AWS Lambda that provides access to private S3 bucke
 
 ## Stack
 
-- Python
-- FastAPI
-- Poetry
-- Pytest
-- Moto
-- Terraform
-- AWS Lambda
-- DynamoDB
-- S3
+- **Application core**: Python + FastAPI
+- **Package manager**: Poetry
+- **Testing**: Pytest + Moto
+- **Infrastructure management**: Terraform
+- **Cloud services**: AWS Lambda + DynamoDB + S3
 
 ## Requirements
 
@@ -21,12 +17,13 @@ Create a service deployed on AWS Lambda that provides access to private S3 bucke
 - [x] Setup package manager
 - [x] Install FastAPI
 - [x] Create dummy endpoint
-- [ ] Setup S3 integration
+- [x] Setup S3 integration
 - [x] Create endpoint to list files
 - [x] Create endpoint to retrieve pre-signed url for a specific file
 - [x] Setup linting
 - [x] Setup testing
 - [x] Improve testing to use factory boy
+- [x] Improve testing by using moto to mock AWS services
 - [x] Setup persistence layer (DynamoDB?)
 - [x] Create endpoint to add new user
 - [ ] Setup token auth to API
@@ -38,11 +35,17 @@ Create a service deployed on AWS Lambda that provides access to private S3 bucke
 - [x] Setup S3 resource (make it fully private to avoid public access)
 - [x] Setup DynamoDB resource
 - [x] Setup FastAPI deploy to AWS Lambda
+- [ ] Adjust role to include S3 and DynamoDB permissions
 - [ ] Setup CI/CD pipeline
+- [ ] Integrate project with localstack for easy local testing
+
+### Architecture
+
+- [ ] Improve code architecture by evaluating including service/repo layers
 
 ### Bugs
 
-- [] Redirect loop happening on the deployed version of the app
+- [ ] Redirect loop happening on the deployed version of the app
 
 ## Database
 

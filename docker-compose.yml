@@ -8,33 +8,13 @@ services:
   fastapi:
     build: .
     image: url-service
+    env_file:
+      - ./server/.env
     entrypoint: >
       sh -c "uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
     volumes:
       - ./server/src/app:/var/task/app
     ports:
       - "8000:8000"
-    depends_on:
-      - dynamodb-local
-
-  dynamodb-local:
-    image: amazon/dynamodb-local:latest
-    container_name: dynamodb-local
-    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath /home/dynamodblocal/data/"
-    user: root
-    volumes:
-      - dynamodb_data:/home/dynamodblocal/data
-    ports:
-      - "4000:8000"
-
-  dynamodb-admin:
-    image: aaronshaf/dynamodb-admin
-    ports:
-      - "8001:8001"
-    environment:
-      DYNAMO_ENDPOINT: "http://dynamodb-local:8000"
-      AWS_REGION: "us-east-1"
-      AWS_ACCESS_KEY_ID: local
-      AWS_SECRET_ACCESS_KEY: local
     depends_on:
       - dynamodb-local

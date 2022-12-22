@@ -3,9 +3,11 @@ from typing import Optional
 import boto3
 import botocore
 
+from app import settings
+
 
 def get_s3_client():
-    return boto3.client("s3")
+    return boto3.client("s3", region_name=settings.AWS_REGION)
 
 
 def list_files(bucket_name: str) -> list[str]:
