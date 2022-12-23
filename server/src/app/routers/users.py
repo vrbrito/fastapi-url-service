@@ -1,7 +1,9 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
+from fastapi.openapi.models import APIKey
 from pydantic import BaseModel
 
 from app import settings
+from app.auth import admin_auth
 from app.domain.entity import User
 from app.domain.exceptions import UserAlreadyExistsError
 from app.external import db
@@ -20,8 +22,16 @@ class UserPayload(BaseModel):
     isAdmin: bool = False
 
 
-@router.post("/", status_code=201, response_model=User, responses={400: {"description": "User already exists"}})
-def create_user(payload: UserPayload):
+@router.post(
+    "/",
+    status_code=201,
+    response_model=User,
+    responses={400: {"description": "User already exists"}},
+)
+def create_user(
+    payload: UserPayload,
+    api_key: APIKey = Depends(admin_auth),
+):
     user = User(**payload.dict())
 
     try:

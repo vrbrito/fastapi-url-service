@@ -67,12 +67,22 @@ def test_check_if_user_token_is_valid():
     table_name = "url-service-dev"
 
     active_user = UserFactory.create(isActive=True)
+    active_admin_user = UserFactory.create(isActive=True, isAdmin=True)
     inactive_user = UserFactory.create(isActive=False)
 
     setup_db(table_name, table_schema)
     add_item(table_name, active_user.to_db())
+    add_item(table_name, active_admin_user.to_db())
     add_item(table_name, inactive_user.to_db())
 
-    assert check_if_user_token_is_valid(table_name, active_user.token) is True
-    assert check_if_user_token_is_valid(table_name, inactive_user.token) is False
-    assert check_if_user_token_is_valid(table_name, uuid.uuid4()) is False
+    assert check_if_user_token_is_valid(table_name, active_user.token, False) is True
+    assert check_if_user_token_is_valid(table_name, active_user.token, True) is False
+
+    assert check_if_user_token_is_valid(table_name, active_admin_user.token, False) is True
+    assert check_if_user_token_is_valid(table_name, active_admin_user.token, True) is True
+
+    assert check_if_user_token_is_valid(table_name, inactive_user.token, False) is False
+    assert check_if_user_token_is_valid(table_name, inactive_user.token, True) is False
+
+    assert check_if_user_token_is_valid(table_name, uuid.uuid4(), False) is False
+    assert check_if_user_token_is_valid(table_name, uuid.uuid4(), True) is False

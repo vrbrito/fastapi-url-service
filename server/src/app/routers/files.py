@@ -1,7 +1,9 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
+from fastapi.openapi.models import APIKey
 from pydantic import BaseModel
 
 from app import settings
+from app.auth import basic_auth
 from app.external import storage
 
 router = APIRouter(
@@ -23,14 +25,19 @@ class SignedURL(BaseModel):
 
 
 @router.get("/", response_model=FileList)
-def list_files():
+def list_files(
+    api_key: APIKey = Depends(basic_auth),
+):
     files = storage.list_files(bucket_name=settings.AWS_BUCKET_NAME)
 
     return {"files": files}
 
 
 @router.post("/", response_model=SignedURL, responses={404: {"description": "File not found"}})
-def obtain_pre_signed_url(payload: SignedURLPayload):
+def obtain_pre_signed_url(
+    payload: SignedURLPayload,
+    api_key: APIKey = Depends(basic_auth),
+):
     pre_signed_url = storage.get_pre_signed_url(bucket_name=settings.AWS_BUCKET_NAME, object_name=payload.path)
 
     if not pre_signed_url:

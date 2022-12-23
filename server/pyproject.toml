@@ -24,6 +24,7 @@ factory-boy = "^3.2.1"
 pytest-freezegun = "^0.4.2"
 botocore-stubs = "^1.29.35"
 boto3-stubs = {extras = ["essential"], version = "^1.26.35"}
+pytest-asyncio = "^0.20.3"
 
 [build-system]
 requires = ["poetry-core"]

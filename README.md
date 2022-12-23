@@ -26,7 +26,7 @@ Create a service deployed on AWS Lambda that provides access to private S3 bucke
 - [x] Improve testing by using moto to mock AWS services
 - [x] Setup persistence layer (DynamoDB?)
 - [x] Create endpoint to add new user
-- [ ] Setup token auth to API
+- [x] Setup token auth to API
 - [ ] Create usage measurements based on token auth
 
 ### Infra
@@ -42,6 +42,11 @@ Create a service deployed on AWS Lambda that provides access to private S3 bucke
 ### Architecture
 
 - [ ] Improve code architecture by evaluating including service/repo layers
+
+### Improvements
+
+- [ ] Avoid local env to use real resources
+- [ ] Include .env variables for deployed env
 
 ### Bugs
 

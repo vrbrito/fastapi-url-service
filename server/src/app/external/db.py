@@ -52,8 +52,11 @@ def get_user_by_email(table_name: str, email: str) -> Optional[User]:
     return User.from_db(response["Items"][0])
 
 
-def check_if_user_token_is_valid(table_name: str, token: UUID) -> bool:
+def check_if_user_token_is_valid(table_name: str, token: UUID, requires_admin: bool = False) -> bool:
     identifier = User.from_token_to_identifier(token)
     user = get_user_by_identifier(table_name, identifier)
 
-    return user is not None and user.isActive
+    if not requires_admin:
+        return user is not None and user.isActive
+
+    return user is not None and user.isActive and user.isAdmin
