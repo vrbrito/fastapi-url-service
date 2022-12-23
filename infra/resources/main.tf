@@ -10,6 +10,8 @@ locals {
   project_name       = "url-service"
   global_prefix_name = "${local.project_name}-${terraform.workspace}"
 
+  env_variables = yamldecode(file("../../server/settings.yml"))["${terraform.workspace}"]
+
   tags = {
     project              = local.project_name
     type                 = "personal-project"

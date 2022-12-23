@@ -1,0 +1,4 @@
+dev:
+  STAGE: "dev"
+  AWS_BUCKET_NAME: "url-service-dev-files"
+  AWS_DYNAMODB_TABLE_NAME: "url-service-dev"

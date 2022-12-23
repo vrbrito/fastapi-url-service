@@ -44,6 +44,10 @@ resource "aws_lambda_function" "api" {
 
   memory_size = 512
   timeout     = 28
+
+  environment {
+    variables = local.env_variables
+  }
 }
 
 resource "aws_lambda_function_url" "api_url" {

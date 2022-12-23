@@ -2,15 +2,14 @@ from typing import Optional
 from uuid import UUID
 
 import boto3
-from boto3.dynamodb.conditions import Key
-
 from app import settings
 from app.domain.entity import User
 from app.domain.exceptions import UserAlreadyExistsError
+from boto3.dynamodb.conditions import Key
 
 
 def get_dynamodb_table(table_name: str):
-    dynamodb = boto3.resource("dynamodb", region_name=settings.AWS_REGION)
+    dynamodb = boto3.resource("dynamodb", region_name=settings.AWS_DEFAULT_REGION)
     return dynamodb.Table(table_name)
 
 

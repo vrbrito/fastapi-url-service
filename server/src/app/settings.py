@@ -1,5 +1,7 @@
-import os
+from prettyconf import config
 
-AWS_REGION = os.getenv("AWS_REGION", "us-east-1")
-AWS_BUCKET_NAME = os.getenv("AWS_BUCKET_NAME", "url-service-dev-files")
-AWS_DYNAMODB_TABLE_NAME = os.getenv("AWS_DYNAMODB_TABLE_NAME", "url-service-dev")
+STAGE = config("STAGE")
+
+AWS_DEFAULT_REGION = config("AWS_DEFAULT_REGION")
+AWS_BUCKET_NAME = config("AWS_BUCKET_NAME")
+AWS_DYNAMODB_TABLE_NAME = config("AWS_DYNAMODB_TABLE_NAME")
