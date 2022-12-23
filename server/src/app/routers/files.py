@@ -24,7 +24,7 @@ class SignedURL(BaseModel):
     signed_url: str
 
 
-@router.get("/", response_model=FileList)
+@router.get("", response_model=FileList)
 def list_files(
     api_key: APIKey = Depends(basic_auth),
 ):
@@ -33,7 +33,7 @@ def list_files(
     return {"files": files}
 
 
-@router.post("/", response_model=SignedURL, responses={404: {"description": "File not found"}})
+@router.post("", response_model=SignedURL, responses={404: {"description": "File not found"}})
 def obtain_pre_signed_url(
     payload: SignedURLPayload,
     api_key: APIKey = Depends(basic_auth),

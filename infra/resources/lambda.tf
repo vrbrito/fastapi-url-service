@@ -1,15 +1,17 @@
 resource "aws_iam_role" "api_role" {
   name = "${local.global_prefix_name}-api-role"
-  
+
   inline_policy {
     name = "resource_access"
     policy = jsonencode({
       Version = "2012-10-17"
       Statement = [
         {
-          Action   = [
+          Action = [
             "cloudwatch:*",
             "logs:*",
+            "dynamodb:*",
+            "s3:*",
           ]
           Effect   = "Allow"
           Resource = "*"
@@ -17,18 +19,18 @@ resource "aws_iam_role" "api_role" {
       ]
     })
   }
-  
+
   assume_role_policy = jsonencode({
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Action": "sts:AssumeRole",
-            "Principal": {
-                "Service": "lambda.amazonaws.com"
-            },
-            "Effect": "Allow",
-            "Sid": ""
-        }
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Action" : "sts:AssumeRole",
+        "Principal" : {
+          "Service" : "lambda.amazonaws.com"
+        },
+        "Effect" : "Allow",
+        "Sid" : ""
+      }
     ]
   })
 }

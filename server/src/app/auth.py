@@ -11,18 +11,22 @@ API_KEY_NAME = "access_token"
 api_key_header = APIKeyHeader(name=API_KEY_NAME, auto_error=False)
 
 
-async def basic_auth(api_key_header: str = Security(api_key_header), requires_admin: bool = False):
-    if not api_key_header:
+async def authentication_check(key: str, requires_admin: bool = False):
+    if not key:
         raise HTTPException(status_code=403, detail="Missing credentials")
 
-    if not is_valid_uuid(api_key_header):
+    if not is_valid_uuid(key):
         raise HTTPException(status_code=403, detail="Credentials need to be a valid UUID token")
 
-    if db.check_if_user_token_is_valid(settings.AWS_DYNAMODB_TABLE_NAME, UUID(api_key_header), requires_admin):
-        return api_key_header
+    if db.check_if_user_token_is_valid(settings.AWS_DYNAMODB_TABLE_NAME, UUID(key), requires_admin):
+        return key
 
     raise HTTPException(status_code=403, detail="Could not validate credentials")
 
 
-async def admin_auth(api_key_header: str = Security(api_key_header)):
-    return await basic_auth(api_key_header, requires_admin=True)
+async def basic_auth(key: str = Security(api_key_header)):
+    return await authentication_check(key, requires_admin=False)
+
+
+async def admin_auth(key: str = Security(api_key_header)):
+    return await authentication_check(key, requires_admin=True)

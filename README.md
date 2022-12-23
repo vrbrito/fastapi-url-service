@@ -35,9 +35,9 @@ Create a service deployed on AWS Lambda that provides access to private S3 bucke
 - [x] Setup S3 resource (make it fully private to avoid public access)
 - [x] Setup DynamoDB resource
 - [x] Setup FastAPI deploy to AWS Lambda
-- [ ] Adjust role to include S3 and DynamoDB permissions
+- [x] Adjust role to include S3 and DynamoDB permissions
 - [ ] Setup CI/CD pipeline
-- [ ] Integrate project with localstack for easy local testing
+- [ ] Setup pre-commit hooks
 
 ### Architecture
 
@@ -45,12 +45,12 @@ Create a service deployed on AWS Lambda that provides access to private S3 bucke
 
 ### Improvements
 
-- [ ] Avoid local env to use real resources
+- [ ] Avoid local env from using real resources
 - [ ] Include .env variables for deployed env
 
 ### Bugs
 
-- [ ] Redirect loop happening on the deployed version of the app
+- [x] Redirect loop happening on the deployed version of the app
 
 ## Database
 

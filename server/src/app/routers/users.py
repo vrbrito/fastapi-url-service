@@ -22,12 +22,7 @@ class UserPayload(BaseModel):
     isAdmin: bool = False
 
 
-@router.post(
-    "/",
-    status_code=201,
-    response_model=User,
-    responses={400: {"description": "User already exists"}},
-)
+@router.post("", status_code=201, response_model=User, responses={400: {"description": "User already exists"}})
 def create_user(
     payload: UserPayload,
     api_key: APIKey = Depends(admin_auth),

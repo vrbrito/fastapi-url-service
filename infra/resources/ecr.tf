@@ -1,5 +1,5 @@
 resource "aws_ecr_repository" "this" {
-  name                 = "${local.global_prefix_name}"
+  name                 = local.global_prefix_name
   image_tag_mutability = "IMMUTABLE"
 
   tags = local.tags
