@@ -27,7 +27,7 @@ Create a service deployed on AWS Lambda that provides access to private S3 bucke
 - [x] Setup persistence layer (DynamoDB?)
 - [x] Create endpoint to add new user
 - [x] Setup token auth to API
-- [ ] Create usage measurements based on token auth
+- [x] Create usage measurements based on token auth
 
 ### Infra
 
@@ -37,8 +37,8 @@ Create a service deployed on AWS Lambda that provides access to private S3 bucke
 - [x] Setup FastAPI deploy to AWS Lambda
 - [x] Adjust role to include S3 and DynamoDB permissions
 - [ ] Setup CI/CD pipeline
-- [ ] Integrate project with localstack for easy local testing
 - [ ] Setup pre-commit hooks
+- [ ] Integrate project with localstack for easy local testing
 
 ### Architecture
 

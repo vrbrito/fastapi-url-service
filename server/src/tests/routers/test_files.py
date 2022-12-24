@@ -65,9 +65,13 @@ def test_list_files_empty_bucket():
 
 @mock_s3
 @mock.patch("app.external.db.check_if_user_token_is_valid", mock.MagicMock(return_value=True))
-def test_obtain_pre_signed_url():
+@mock.patch("app.external.db.increment_usage")
+def test_obtain_pre_signed_url(increment_usage_mock):
     bucket_name = settings.AWS_BUCKET_NAME
+    table_name = settings.AWS_DYNAMODB_TABLE_NAME
     object_name = "b/c/test.txt"
+
+    token = uuid.uuid4()
 
     setup_bucket(bucket_name)
     create_file(bucket_name, object_name)
@@ -76,12 +80,14 @@ def test_obtain_pre_signed_url():
         "/files/",
         json={"path": object_name},
         headers={
-            "access_token": str(uuid.uuid4()),
+            "access_token": str(token),
         },
     )
 
     assert response.status_code == 200
     assert response.json()["signed_url"] is not None
+
+    increment_usage_mock.assert_called_once_with(table_name=table_name, token=token)
 
     expected_sub_strings = [
         f"https://{bucket_name}.s3.amazonaws.com/{object_name}?",
@@ -96,7 +102,8 @@ def test_obtain_pre_signed_url():
 
 @mock_s3
 @mock.patch("app.external.db.check_if_user_token_is_valid", mock.MagicMock(return_value=True))
-def test_obtain_pre_signed_url_file_does_not_exist():
+@mock.patch("app.external.db.increment_usage")
+def test_obtain_pre_signed_url_file_does_not_exist(increment_usage_mock):
     bucket_name = settings.AWS_BUCKET_NAME
 
     setup_bucket(bucket_name)
@@ -108,6 +115,8 @@ def test_obtain_pre_signed_url_file_does_not_exist():
             "access_token": str(uuid.uuid4()),
         },
     )
+
+    increment_usage_mock.assert_not_called()
 
     assert response.status_code == 404
     assert response.json() == {"detail": "File not found"}

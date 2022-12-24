@@ -1,10 +1,12 @@
+from uuid import UUID
+
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.openapi.models import APIKey
 from pydantic import BaseModel
 
 from app import settings
 from app.auth import basic_auth
-from app.external import storage
+from app.external import db, storage
 
 router = APIRouter(
     prefix="/files",
@@ -43,4 +45,5 @@ def obtain_pre_signed_url(
     if not pre_signed_url:
         raise HTTPException(status_code=404, detail="File not found")
 
+    db.increment_usage(table_name=settings.AWS_DYNAMODB_TABLE_NAME, token=UUID(api_key))  # type: ignore
     return {"signed_url": pre_signed_url}

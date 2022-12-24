@@ -1,6 +1,9 @@
+import uuid
+from random import randint
+
 import factory
 
-from app.domain.entity import User
+from app.domain.entity import Usage, User
 
 
 class UserFactory(factory.Factory):
@@ -13,4 +16,16 @@ class UserFactory(factory.Factory):
 
     @classmethod
     def create(cls, **kwargs) -> User:
+        return super().create(**kwargs)
+
+
+class UsageFactory(factory.Factory):
+    class Meta:
+        model = Usage
+
+    token = factory.LazyFunction(uuid.uuid4)
+    numPreSignedUrls = factory.LazyFunction(lambda: randint(1, 10))
+
+    @classmethod
+    def create(cls, **kwargs) -> Usage:
         return super().create(**kwargs)

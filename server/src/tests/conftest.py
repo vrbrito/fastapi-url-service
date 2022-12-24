@@ -8,7 +8,7 @@ from mypy_boto3_dynamodb.type_defs import (
     KeySchemaElementTypeDef,
 )
 
-from app.external.db import get_dynamodb_table
+from app.external.db import _get_dynamodb_table
 
 
 @dataclass
@@ -73,12 +73,12 @@ def setup_db(table_name: str, table_schema: TableSchema) -> None:
 
 
 def add_item(table_name: str, item) -> None:
-    table = get_dynamodb_table(table_name)
+    table = _get_dynamodb_table(table_name)
     table.put_item(Item=item)
 
 
 def get_item(table_name: str, keys) -> Optional[dict]:
-    table = get_dynamodb_table(table_name)
+    table = _get_dynamodb_table(table_name)
     response = table.get_item(Key=keys)
 
     if "Item" not in response:

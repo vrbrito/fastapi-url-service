@@ -1,5 +1,5 @@
-from app.domain.entity import User
-from tests.domain.factories import UserFactory
+from app.domain.entity import Usage, User
+from tests.domain.factories import UsageFactory, UserFactory
 
 
 def test_user_entity_identifier_property():
@@ -37,4 +37,26 @@ def test_user_entity_to_db():
         "isActive": user.isActive,
         "isAdmin": user.isAdmin,
         "createdOn": user.createdOn.isoformat(),
+    }
+
+
+def test_usage_entity_from_db():
+    usage = UsageFactory.create()
+
+    usage_dict = {
+        "entityIdentifier": User.from_token_to_identifier(usage.token),
+        "dataType": "USAGE",
+        "numPreSignedUrls": usage.numPreSignedUrls,
+    }
+
+    assert Usage.from_db(usage_dict) == usage
+
+
+def test_usage_entity_to_db():
+    usage = UsageFactory.create()
+
+    assert usage.to_db() == {
+        "dataType": "USAGE",
+        "entityIdentifier": User.from_token_to_identifier(usage.token),
+        "numPreSignedUrls": usage.numPreSignedUrls,
     }

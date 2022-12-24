@@ -2,6 +2,7 @@ from typing import Optional
 
 import boto3
 import botocore
+
 from app import settings
 
 
