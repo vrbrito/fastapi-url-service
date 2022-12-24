@@ -63,3 +63,4 @@ For this project, a single-table approach was chosen to be used on DynamoDB, for
 - Register new user (write)
   - Email must be unique across all users
 - Register usage for each new request (write)
+- Fetch usage based on token (read)
