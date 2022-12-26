@@ -1,4 +1,4 @@
-resource "aws_dynamodb_table" "dynamodb-table" {
+resource "aws_dynamodb_table" "dynamodb_table" {
   name         = local.global_prefix_name
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "entityIdentifier"

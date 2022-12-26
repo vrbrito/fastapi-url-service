@@ -36,7 +36,7 @@ Create a service deployed on AWS Lambda that provides access to private S3 bucke
 - [x] Setup DynamoDB resource
 - [x] Setup FastAPI deploy to AWS Lambda
 - [x] Adjust role to include S3 and DynamoDB permissions
-- [ ] Setup CI/CD pipeline
+- [x] Setup CI/CD pipeline
 - [ ] Setup pre-commit hooks
 - [ ] Integrate project with localstack for easy local testing
 
