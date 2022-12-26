@@ -4,6 +4,12 @@ terraform {
   required_providers {
     aws = "~> 4.46.0"
   }
+
+  backend "s3" {
+    bucket = "terraform-state-334fa816"
+    key    = "url-service/project.tfstate"
+    region = "us-east-1"
+  }
 }
 
 locals {
