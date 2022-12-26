@@ -27,6 +27,8 @@ botocore-stubs = "^1.29.35"
 boto3-stubs = {extras = ["essential"], version = "^1.26.35"}
 pytest-asyncio = "^0.20.3"
 pytest-env = "^0.8.1"
+bandit = "^1.7.4"
+safety = "^2.3.5"
 
 [build-system]
 requires = ["poetry-core"]
@@ -36,6 +38,9 @@ build-backend = "poetry.core.masonry.api"
 env = [
     "AWS_ACCESS_KEY_ID = dummy",
     "AWS_SECRET_ACCESS_KEY = dummy",
+    "AWS_DEFAULT_REGION = us-east-1",
+    "AWS_BUCKET_NAME = dummy-bucket",
+    "AWS_DYNAMODB_TABLE_NAME = dummy-table",
     "STAGE = test"
 ]
 
