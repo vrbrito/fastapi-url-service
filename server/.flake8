@@ -2,4 +2,4 @@
 max-line-length = 120
 exclude = .direnv,compose,docs,*snap_test_schema*,*migrations*,sentry_event.py,venv
 max-complexity = 10
-ignore = F405
+ignore = F405,B008
