@@ -42,7 +42,7 @@ Create a service deployed on AWS Lambda that provides access to private S3 bucke
 
 ### Architecture
 
-- [ ] Improve code architecture by evaluating including service/repo layers
+- [x] Improve code architecture by including service/repo layers
 
 ### Improvements
 

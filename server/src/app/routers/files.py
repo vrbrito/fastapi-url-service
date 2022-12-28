@@ -4,11 +4,10 @@ from fastapi import APIRouter, Depends, HTTPException
 from fastapi.openapi.models import APIKey
 from pydantic import BaseModel
 
-from app import settings
-from app.adapters import storage
 from app.adapters.repository import DynamoDBRepository
+from app.adapters.storage import S3Storage
 from app.auth import basic_auth
-from app.services import users
+from app.services import files, users
 
 router = APIRouter(
     prefix="/files",
@@ -32,7 +31,9 @@ class SignedURL(BaseModel):
 def list_files(
     api_key: APIKey = Depends(basic_auth),
 ):
-    files = storage.list_files(bucket_name=settings.AWS_BUCKET_NAME)
+    storage = S3Storage()
+
+    files = storage.list_files()
 
     return {"files": files}
 
@@ -43,9 +44,9 @@ def obtain_pre_signed_url(
     api_key: APIKey = Depends(basic_auth),
 ):
     repo = DynamoDBRepository()
+    storage = S3Storage()
 
-    pre_signed_url = storage.get_pre_signed_url(bucket_name=settings.AWS_BUCKET_NAME, object_name=payload.path)
-
+    pre_signed_url = files.get_pre_signed_url(object_name=payload.path, storage=storage)
     if not pre_signed_url:
         raise HTTPException(status_code=404, detail="File not found")
 

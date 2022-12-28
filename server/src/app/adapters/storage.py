@@ -6,45 +6,39 @@ import botocore
 from app import settings
 
 
-def get_s3_client():
-    return boto3.client("s3", region_name=settings.AWS_DEFAULT_REGION)
+class S3Storage:
+    def __init__(self, bucket_name: Optional[str] = None) -> None:
+        self.bucket_name = bucket_name or settings.AWS_BUCKET_NAME
+        self.s3_client = boto3.client("s3", region_name=settings.AWS_DEFAULT_REGION)
 
+    def list_files(self) -> list[str]:
+        response = self.s3_client.list_objects(Bucket=self.bucket_name)
 
-def list_files(bucket_name: str) -> list[str]:
-    s3 = get_s3_client()
-    response = s3.list_objects(Bucket=bucket_name)
+        if "Contents" not in response:
+            return []
 
-    if "Contents" not in response:
-        return []
+        return [file["Key"] for file in response["Contents"] if "Key" in file]
 
-    return [file["Key"] for file in response["Contents"] if "Key" in file]
+    def check_if_file_exists(self, object_name: str) -> bool:
+        try:
+            self.s3_client.head_object(Bucket=self.bucket_name, Key=object_name)
+        except botocore.exceptions.ClientError as error:  # type: ignore
+            if error.response["Error"]["Code"] == "404":
+                return False
 
+            raise error
 
-def check_if_file_exists(bucket_name: str, object_name: str) -> bool:
-    s3 = get_s3_client()
+        return True
 
-    try:
-        s3.head_object(Bucket=bucket_name, Key=object_name)
-    except botocore.exceptions.ClientError as error:  # type: ignore
-        if error.response["Error"]["Code"] == "404":
-            return False
+    def get_pre_signed_url(self, object_name: str, expiration=3600) -> Optional[str]:
+        if not self.check_if_file_exists(object_name):
+            return None
 
-        raise error
-
-    return True
-
-
-def get_pre_signed_url(bucket_name: str, object_name: str, expiration=3600) -> Optional[str]:
-    s3 = get_s3_client()
-
-    if not check_if_file_exists(bucket_name, object_name):
-        return None
-
-    return s3.generate_presigned_url(
-        "get_object",
-        Params={
-            "Bucket": bucket_name,
-            "Key": object_name,
-        },
-        ExpiresIn=expiration,
-    )
+        return self.s3_client.generate_presigned_url(
+            "get_object",
+            Params={
+                "Bucket": self.bucket_name,
+                "Key": object_name,
+            },
+            ExpiresIn=expiration,
+        )
