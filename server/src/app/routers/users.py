@@ -4,11 +4,11 @@ from fastapi import APIRouter, Depends, HTTPException
 from fastapi.openapi.models import APIKey
 from pydantic import BaseModel
 
-from app import settings
+from app.adapters.repository import DynamoDBRepository
 from app.auth import admin_auth
 from app.domain.entity import Usage, User
 from app.domain.exceptions import UserAlreadyExistsError
-from app.external import db
+from app.services import users
 
 router = APIRouter(
     prefix="/users",
@@ -31,8 +31,10 @@ def create_user(
 ):
     user = User(**payload.dict())
 
+    repo = DynamoDBRepository()
+
     try:
-        db.create_user(table_name=settings.AWS_DYNAMODB_TABLE_NAME, user=user)
+        users.create_user(user=user, repo=repo)
     except UserAlreadyExistsError as error:
         raise HTTPException(status_code=400, detail="User already exists") from error
 
@@ -45,8 +47,10 @@ def fetch_usage(
     api_key: APIKey = Depends(admin_auth),
 ):
     identifier = User.from_token_to_identifier(token=token)
-    usage = db.get_usage_by_identifier(table_name=settings.AWS_DYNAMODB_TABLE_NAME, identifier=identifier)
 
+    repo = DynamoDBRepository()
+
+    usage = users.get_usage_by_identifier(identifier=identifier, repo=repo)
     if not usage:
         raise HTTPException(status_code=400, detail="No usage defined yet")
 

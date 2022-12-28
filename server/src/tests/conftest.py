@@ -8,7 +8,7 @@ from mypy_boto3_dynamodb.type_defs import (
     KeySchemaElementTypeDef,
 )
 
-from app.external.db import _get_dynamodb_table
+from app import settings
 
 
 @dataclass
@@ -61,6 +61,11 @@ def create_files(bucket_name: str, object_names: list[str]) -> None:
 
 
 # DynamoDB
+def get_dynamodb_table(table_name: str):
+    dynamodb = boto3.resource("dynamodb", region_name=settings.AWS_DEFAULT_REGION)
+    return dynamodb.Table(table_name)
+
+
 def setup_db(table_name: str, table_schema: TableSchema) -> None:
     dynamodb = boto3.client("dynamodb")
     dynamodb.create_table(
@@ -73,12 +78,12 @@ def setup_db(table_name: str, table_schema: TableSchema) -> None:
 
 
 def add_item(table_name: str, item) -> None:
-    table = _get_dynamodb_table(table_name)
+    table = get_dynamodb_table(table_name)
     table.put_item(Item=item)
 
 
 def get_item(table_name: str, keys) -> Optional[dict]:
-    table = _get_dynamodb_table(table_name)
+    table = get_dynamodb_table(table_name)
     response = table.get_item(Key=keys)
 
     if "Item" not in response:

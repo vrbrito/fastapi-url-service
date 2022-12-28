@@ -21,7 +21,7 @@ def test_list_files_requires_auth():
 
 
 @mock_s3
-@mock.patch("app.external.db.check_if_user_token_is_valid", mock.MagicMock(return_value=True))
+@mock.patch("app.services.users.is_valid_token", mock.MagicMock(return_value=True))
 def test_list_files():
     bucket_name = settings.AWS_BUCKET_NAME
     object_names = [
@@ -46,7 +46,7 @@ def test_list_files():
 
 
 @mock_s3
-@mock.patch("app.external.db.check_if_user_token_is_valid", mock.MagicMock(return_value=True))
+@mock.patch("app.services.users.is_valid_token", mock.MagicMock(return_value=True))
 def test_list_files_empty_bucket():
     bucket_name = settings.AWS_BUCKET_NAME
 
@@ -64,11 +64,10 @@ def test_list_files_empty_bucket():
 
 
 @mock_s3
-@mock.patch("app.external.db.check_if_user_token_is_valid", mock.MagicMock(return_value=True))
-@mock.patch("app.external.db.increment_usage")
+@mock.patch("app.services.users.is_valid_token", mock.MagicMock(return_value=True))
+@mock.patch("app.services.users.increment_usage")
 def test_obtain_pre_signed_url(increment_usage_mock):
     bucket_name = settings.AWS_BUCKET_NAME
-    table_name = settings.AWS_DYNAMODB_TABLE_NAME
     object_name = "b/c/test.txt"
 
     token = uuid.uuid4()
@@ -87,7 +86,7 @@ def test_obtain_pre_signed_url(increment_usage_mock):
     assert response.status_code == 200
     assert response.json()["signed_url"] is not None
 
-    increment_usage_mock.assert_called_once_with(table_name=table_name, token=token)
+    increment_usage_mock.assert_called_once()
 
     expected_sub_strings = [
         f"https://{bucket_name}.s3.amazonaws.com/{object_name}?",
@@ -101,8 +100,8 @@ def test_obtain_pre_signed_url(increment_usage_mock):
 
 
 @mock_s3
-@mock.patch("app.external.db.check_if_user_token_is_valid", mock.MagicMock(return_value=True))
-@mock.patch("app.external.db.increment_usage")
+@mock.patch("app.services.users.is_valid_token", mock.MagicMock(return_value=True))
+@mock.patch("app.services.users.increment_usage")
 def test_obtain_pre_signed_url_file_does_not_exist(increment_usage_mock):
     bucket_name = settings.AWS_BUCKET_NAME
 

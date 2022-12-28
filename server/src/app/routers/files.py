@@ -5,8 +5,10 @@ from fastapi.openapi.models import APIKey
 from pydantic import BaseModel
 
 from app import settings
+from app.adapters import storage
+from app.adapters.repository import DynamoDBRepository
 from app.auth import basic_auth
-from app.external import db, storage
+from app.services import users
 
 router = APIRouter(
     prefix="/files",
@@ -40,10 +42,12 @@ def obtain_pre_signed_url(
     payload: SignedURLPayload,
     api_key: APIKey = Depends(basic_auth),
 ):
+    repo = DynamoDBRepository()
+
     pre_signed_url = storage.get_pre_signed_url(bucket_name=settings.AWS_BUCKET_NAME, object_name=payload.path)
 
     if not pre_signed_url:
         raise HTTPException(status_code=404, detail="File not found")
 
-    db.increment_usage(table_name=settings.AWS_DYNAMODB_TABLE_NAME, token=UUID(api_key))  # type: ignore
+    users.increment_usage(token=UUID(api_key), repo=repo)  # type: ignore
     return {"signed_url": pre_signed_url}
