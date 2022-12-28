@@ -40,6 +40,12 @@ def test_user_entity_to_db():
     }
 
 
+def test_usage_entity_identifier_property():
+    usage = UsageFactory.create()
+
+    assert usage.entity_identifier == f"USER#{usage.token}"
+
+
 def test_usage_entity_from_db():
     usage = UsageFactory.create()
 

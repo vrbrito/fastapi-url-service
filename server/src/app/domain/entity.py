@@ -60,6 +60,10 @@ class Usage(BaseModel):
     numPreSignedUrls: int
     token: UUID
 
+    @property
+    def entity_identifier(self):
+        return User.from_token_to_identifier(self.token)
+
     @classmethod
     def from_db(cls, usage_dict: dict) -> "Usage":
         # remove from payload
