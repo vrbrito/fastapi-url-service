@@ -1,6 +1,6 @@
 from moto import mock_s3
 
-from app.external.storage import check_if_file_exists, get_pre_signed_url, list_files
+from app.adapters.storage import check_if_file_exists, get_pre_signed_url, list_files
 from tests.conftest import create_file, create_files, setup_bucket
 
 
